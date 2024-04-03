@@ -66,8 +66,8 @@
       const payload = JSON.parse(decodeURIComponent(state));
 
       api.loginImplicitGrant(
-        "b6842dcd-c15b-4db9-a8fb-001e1057a629",
-        "https://rodardila9.github.io/mutedCalls/"
+        "#####",
+        "https://rodardila9.github.io/DisconnectInteraction/"
       )
         .then(() => {
           const conversationsApi = new platformClient.ConversationsApi();
@@ -87,8 +87,8 @@
     } else if (conversationId && body) {
       // Authentication
       api.loginImplicitGrant(
-        "b6842dcd-c15b-4db9-a8fb-001e1057a629",
-        "https://rodardila9.github.io/mutedCalls/",
+        "#####",
+        "https://rodardila9.github.io/DisconnectInteraction/",
         { state: JSON.stringify({ conversationId, body }) }
       );
     } else {
