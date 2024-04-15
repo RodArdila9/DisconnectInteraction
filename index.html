@@ -25,6 +25,7 @@
     const startTime = searchParameters.get("startTime");
     const participant1 = searchParameters.get("participant1");
     const participant2 = searchParameters.get("participant2");
+    const comunicationID = searchParameters.get("comunicationID");
 
   //Convert Original Date to UTC ISO-8601
 
@@ -59,6 +60,47 @@
         }
       ],
       "state": "disconnected"
+    }
+
+    let bodymensaje = {
+      "textBody": "Encuesta de PQRSF"
+    }
+
+    if (state) {
+      // Authenticated
+      const payload = JSON.parse(decodeURIComponent(state));
+
+      api.loginImplicitGrant(
+        "f8ad746f-0c7a-4323-8161-1fa51c219c9e",
+        "https://rodardila9.github.io/DisconnectInteraction/"
+      )
+        .then(() => {
+          const conversationsApi = new platformClient.ConversationsApi();
+          conversationsApi
+            .postConversationsMessageCommunicationMessages(
+              payload.conversationId, payload.comunicationID,
+              bodymensaje
+            )
+            .then(() => {
+              console.info(`Conversation message send successfully`);
+            })
+            .catch((error) => {
+              console.error(`Conversation message was not send successfully`);
+              console.error(error.message);
+            });
+        });
+    } else if (conversationId && comunicationID && bodymensaje) {
+      // Authentication
+      api.loginImplicitGrant(
+        "f8ad746f-0c7a-4323-8161-1fa51c219c9e",
+        "https://rodardila9.github.io/DisconnectInteraction/",
+        { state: JSON.stringify({ conversationId, comunicationID, bodymensaje }) }
+      );
+    } else {
+      console.error(`Conversation message send successfully`);
+      console.error(
+        `Missing conversationId and/or body on search parameters -> ${location.search}`
+      );
     }
 
     if (state) {
